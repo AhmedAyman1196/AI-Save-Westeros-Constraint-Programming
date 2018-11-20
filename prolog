@@ -1,11 +1,13 @@
 dragon_glass_cnt(0, s0).
-dragon_glass(0, 2).
+dragon_glass(0, 1).
 max_dragon_glass(2).
-rows(2).
+rows(3).
 cols(3).
 john(0, 0, s0).
-walker(1, 0, s0).
-walkers_cnt(1, s0).
+walker(0, 2, s0).
+walker(1, 2, s0).
+walkers_cnt(2, s0).
+obstacle(5,5).
 
 delta2(X, Y):-
     (X is 0, Y is 1); (X is 1, Y is 0).
@@ -39,45 +41,43 @@ count_walkers_around(X, Y, N1, N2, N3, N4, S, ANS):-
 	ANS is (N1 + N2 + N3 + N4).
 
 john(R, C, result(kill, S)):-
-    valid(R, C), john(R, C, S).
+    john(R, C, S), not(obstacle(R,C)). 
     
 john(R, C, result(pick, S)):-
-	valid(R, C), john(R, C, S).
+	john(R, C, S), not(obstacle(R,C)). 
 
 john(R, C, result(left, S)):-
-	valid(R, C), C1 is C + 1, john(R, C1, S).
+	valid(R, C), C1 is C + 1, john(R, C1, S), not(obstacle(R,C)). 
 
 john(R, C, result(right, S)):-
-	valid(R, C), C1 is C - 1, john(R, C1, S).
+	valid(R, C), C1 is C - 1, john(R, C1, S), not(obstacle(R,C)). 
 
 john(R, C, result(up, S)):-
-	valid(R, C), R1 is R + 1, john(R1, C, S).
+	valid(R, C), R1 is R + 1, john(R1, C, S), not(obstacle(R,C)). 
 
 john(R, C, result(down, S)):-
-	valid(R, C), R1 is R - 1, john(R1, C, S).
+	valid(R, C), R1 is R - 1, john(R1, C, S), not(obstacle(R,C)). 
 
 
 walker(R, C, result(kill, S)):-
-    valid(R, C), 
-    (
-    	walker(R, C, S),
-    	(not(can_kill(S)); (john(R1, C1, S), delta(DX, DY), (JR is (R1 + DX), JC is (C1 + DY), (not(JR is R) ; not(JC is C)))))
-    ).
+    walker(R, C, S),
+    (not(can_kill(S)); (john(R1, C1, S), forall(delta(DX, DY), ((JR is (R1 + DX), JC is (C1 + DY), (not(JR is R) ; not(JC is C)))))).
+  
     
 walker(R, C, result(pick, S)):-
-	valid(R, C), walker(R, C, S).
+	walker(R, C, S).
 
 walker(R, C, result(left, S)):-
-	valid(R, C), walker(R, C, S).
+	walker(R, C, S).
 
 walker(R, C, result(right, S)):-
-	valid(R, C), walker(R, C, S).	
+	walker(R, C, S).	
 
 walker(R, C, result(up, S)):-
-	valid(R, C), walker(R, C, S).
+	walker(R, C, S).
 
 walker(R, C, result(down, S)):-
-	valid(R, C), walker(R, C, S).
+	walker(R, C, S).
 
 
 dragon_glass_cnt(R, result(kill, S)):-
@@ -87,16 +87,16 @@ dragon_glass_cnt(R, result(pick, S)):-
 	valid_dragon_glass_cnt(R), john(X, Y, S), dragon_glass(X, Y), R1 is R - 1, dragon_glass_cnt(R1, S).
 
 dragon_glass_cnt(R, result(left, S)):-
-	valid_dragon_glass_cnt(R), dragon_glass_cnt(R, S).
+	dragon_glass_cnt(R, S).
 
 dragon_glass_cnt(R, result(right, S)):-
-	valid_dragon_glass_cnt(R), dragon_glass_cnt(R, S).
+	dragon_glass_cnt(R, S).
 
 dragon_glass_cnt(R, result(up, S)):-
-	valid_dragon_glass_cnt(R), dragon_glass_cnt(R, S).
+	dragon_glass_cnt(R, S).
 
 dragon_glass_cnt(R, result(down, S)):-
-	valid_dragon_glass_cnt(R), dragon_glass_cnt(R, S).
+	dragon_glass_cnt(R, S).
 
 
 walkers_cnt(R, result(kill, S)):-
