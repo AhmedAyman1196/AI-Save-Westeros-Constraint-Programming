@@ -4,10 +4,10 @@ max_dragon_glass(2).
 rows(3).
 cols(3).
 john(0, 0, s0).
-walker(0, 2, s0).
 walker(1, 2, s0).
-walkers_cnt(2, s0).
+walkers_cnt(1, s0).
 obstacle(5,5).
+
 
 delta2(X, Y):-
     (X is 0, Y is 1); (X is 1, Y is 0).
@@ -61,7 +61,7 @@ john(R, C, result(down, S)):-
 
 walker(R, C, result(kill, S)):-
     walker(R, C, S),
-    (not(can_kill(S)); (john(R1, C1, S), forall(delta(DX, DY), ((JR is (R1 + DX), JC is (C1 + DY), (not(JR is R) ; not(JC is C)))))).
+    (not(can_kill(S)); (john(R1, C1, S), forall(delta(DX, DY), ((JR is (R1 + DX), JC is (C1 + DY), (not(JR is R) ; not(JC is C))))))).
   
     
 walker(R, C, result(pick, S)):-
@@ -116,4 +116,3 @@ walkers_cnt(R, result(up, S)):-
 
 walkers_cnt(R, result(down, S)):-
 	walkers_cnt(R, S).
-
