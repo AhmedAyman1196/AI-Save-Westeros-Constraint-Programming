@@ -1,11 +1,6 @@
 # Artificially Intelligent Agent for Saving Westeros
 
-This is a prolog implemention for an intelligent agent who should search for a solution to kill all white walkers in Westeros using minimum number of dragon glasses without looping infinitely using one of the following search techinques : 
-- **BFS**
-- **DFS**
-- **Greedy**
-- **Iterative Deepning**
-- **A Star Algorithm**
+This is a prolog implemention for an intelligent agent who should search for a solution to kill all white walkers in Westeros using minimum number of dragon glasses without looping infinitely.
 
 Westeros is represented as a 2D grid. Cells in westeros are one of the following types:
 - **Empty** : John can freely move to this cell.
